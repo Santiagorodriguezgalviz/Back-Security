@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Users" EntityType="Model1.usuario_rol" />
+    <EntitySet Name="rolSet" EntityType="Model1.rol" />
+    <EntitySet Name="rol_vistaSet" EntityType="Model1.rol_vista" />
+    <EntitySet Name="vistaSet" EntityType="Model1.vista" />
+    <EntitySet Name="moduloSet" EntityType="Model1.modulo" />
+    <EntitySet Name="usuarioSet" EntityType="Model1.usuario" />
+    <EntitySet Name="PersonaSet" EntityType="Model1.Persona" />
+    <AssociationSet Name="modulovista" Association="Model1.modulovista">
+      <End Role="vista" EntitySet="vistaSet" />
+      <End Role="modulo" EntitySet="moduloSet" />
+    </AssociationSet>
+    <AssociationSet Name="Personausuario" Association="Model1.Personausuario">
+      <End Role="Persona" EntitySet="PersonaSet" />
+      <End Role="usuario" EntitySet="usuarioSet" />
+    </AssociationSet>
+    <AssociationSet Name="rolusuario_rol" Association="Model1.rolusuario_rol">
+      <End Role="rol" EntitySet="rolSet" />
+      <End Role="usuario_rol" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="rolrol_vista" Association="Model1.rolrol_vista">
+      <End Role="rol" EntitySet="rolSet" />
+      <End Role="rol_vista" EntitySet="rol_vistaSet" />
+    </AssociationSet>
+    <AssociationSet Name="usuariousuario_rol" Association="Model1.usuariousuario_rol">
+      <End Role="usuario" EntitySet="usuarioSet" />
+      <End Role="usuario_rol" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="usuario_rol">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usuario_id" Type="String" Nullable="false" />
+    <Property Name="rol_id" Type="String" Nullable="false" />
+    <NavigationProperty Name="usuario_rolId" Relationship="Model1.rolusuario_rol" FromRole="usuario_rol" ToRole="rol" />
+    <Property Name="lstrolId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="usuario_Id" Relationship="Model1.usuariousuario_rol" FromRole="usuario_rol" ToRole="usuario" />
+    <Property Name="usuarioId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="rol">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" Nullable="false" />
+    <Property Name="descripcion" Type="String" Nullable="false" />
+    <NavigationProperty Name="lstrol" Relationship="Model1.rolusuario_rol" FromRole="rol" ToRole="usuario_rol" />
+    <NavigationProperty Name="lstRol" Relationship="Model1.rolrol_vista" FromRole="rol" ToRole="rol_vista" />
+  </EntityType>
+  <EntityType Name="rol_vista">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="vista_id" Type="String" Nullable="false" />
+    <Property Name="rol_id" Type="String" Nullable="false" />
+    <NavigationProperty Name="Rol_id" Relationship="Model1.rolrol_vista" FromRole="rol_vista" ToRole="rol" />
+    <Property Name="rolId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vista">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" />
+    <Property Name="descripcion" Type="String" Nullable="false" />
+    <Property Name="ruta" Type="String" Nullable="false" />
+    <Property Name="modulo_id" Type="String" Nullable="false" />
+    <NavigationProperty Name="moduloId" Relationship="Model1.modulovista" FromRole="vista" ToRole="modulo" />
+  </EntityType>
+  <EntityType Name="modulo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" />
+    <Property Name="descripcion" Type="String" Nullable="false" />
+    <NavigationProperty Name="lstvista" Relationship="Model1.modulovista" FromRole="modulo" ToRole="vista" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" />
+    <Property Name="contraseña" Type="String" Nullable="false" />
+    <Property Name="persona_id" Type="String" Nullable="false" />
+    <NavigationProperty Name="lstPersona" Relationship="Model1.Personausuario" FromRole="usuario" ToRole="Persona" />
+    <NavigationProperty Name="lstusuario_rol" Relationship="Model1.usuariousuario_rol" FromRole="usuario" ToRole="usuario_rol" />
+  </EntityType>
+  <EntityType Name="Persona">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="primer_nombre" Type="String" Nullable="false" />
+    <Property Name="segundo_nombre" Type="String" Nullable="false" />
+    <Property Name="primer_apellido" Type="String" Nullable="false" />
+    <Property Name="segundo_apellido" Type="String" Nullable="false" />
+    <Property Name="correo_electronico" Type="String" Nullable="false" />
+    <Property Name="fecha_de_nacimiento" Type="String" Nullable="false" />
+    <Property Name="genero" Type="String" Nullable="false" />
+    <Property Name="direccion" Type="String" Nullable="false" />
+    <Property Name="tipo_de_documento" Type="String" Nullable="false" />
+    <Property Name="documento" Type="String" Nullable="false" />
+    <Property Name="municipio_id" Type="String" Nullable="false" />
+    <NavigationProperty Name="usuarioId" Relationship="Model1.Personausuario" FromRole="Persona" ToRole="usuario" />
+  </EntityType>
+  <Association Name="modulovista">
+    <End Type="Model1.vista" Role="vista" Multiplicity="*" />
+    <End Type="Model1.modulo" Role="modulo" Multiplicity="1" />
+  </Association>
+  <Association Name="Personausuario">
+    <End Type="Model1.Persona" Role="Persona" Multiplicity="1" />
+    <End Type="Model1.usuario" Role="usuario" Multiplicity="1" />
+  </Association>
+  <Association Name="rolusuario_rol">
+    <End Type="Model1.rol" Role="rol" Multiplicity="1" />
+    <End Type="Model1.usuario_rol" Role="usuario_rol" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rol">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="usuario_rol">
+        <PropertyRef Name="lstrolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rolrol_vista">
+    <End Type="Model1.rol" Role="rol" Multiplicity="1" />
+    <End Type="Model1.rol_vista" Role="rol_vista" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rol">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="rol_vista">
+        <PropertyRef Name="rolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="usuariousuario_rol">
+    <End Type="Model1.usuario" Role="usuario" Multiplicity="1" />
+    <End Type="Model1.usuario_rol" Role="usuario_rol" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="usuario_rol">
+        <PropertyRef Name="usuarioId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
